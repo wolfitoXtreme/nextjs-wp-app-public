@@ -1,0 +1,13 @@
+{
+  "name": "acf/ctabutton",
+  "title": "CTA Button",
+  "description": "Call to action button",
+  "category": "Design",
+  "keywords": ["cta", "custom", "button", "cta button"],
+  "icon": "button",
+  "apiVersion": 2,
+  "acf": {
+    "renderTemplate": "./ctaButton.php",
+    "mode": "preview"
+  }
+}

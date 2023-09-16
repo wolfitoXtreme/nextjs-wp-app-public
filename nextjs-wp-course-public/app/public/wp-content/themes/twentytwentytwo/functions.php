@@ -9,6 +9,15 @@
  * @since Twenty Twenty-Two 1.0
  */
 
+if (function_exists( 'acf_add_options_page' ) ) :
+	// https://developer.wordpress.org/resource/dashicons/
+	acf_add_options_page(array(
+		'page_title' 			=> 'Main menu',
+		'menu_title' 			=> 'Main menu',
+		'show_in_graphql' => true,
+		'icon_url'				=> 'dashicons-menu'
+	));
+endif;
 
 if ( ! function_exists( 'twentytwentytwo_support' ) ) :
 
@@ -63,5 +72,46 @@ endif;
 
 add_action( 'wp_enqueue_scripts', 'twentytwentytwo_styles' );
 
+/**
+* Registers an editor stylesheet for the theme.
+*/
+function wpdocs_theme_add_editor_styles() {
+	add_editor_style( 'custom-editor-style.css' );
+}
+add_action( 'admin_init', 'wpdocs_theme_add_editor_styles' );
+
 // Add block patterns
 require get_template_directory() . '/inc/block-patterns.php';
+
+// registering custom blocks
+	// Do I really need custom blocks ?
+	// Seems the main utility is of rendering in WP UI
+add_action('acf/init', 'acf_init_block_types');
+function acf_init_block_types() {
+
+	// add attributes to custom blocks
+	add_filter('wp_graphql_blocks_process_attributes', function($attributes, $data, $post_id){
+		if($data['blockName'] == 'acf/propertyfeatures') {
+			$attributes['price'] = get_field('price', $post_id) ?? "";
+			$attributes['bedrooms'] = get_field('bedrooms', $post_id) ?? "";
+			$attributes['bathrooms'] = get_field('bathrooms', $post_id) ?? "";
+			$attributes['hasParking'] = get_field('has_parking', $post_id) ?? "";
+			$attributes['petFriendly'] = get_field('pet_friendly', $post_id) ?? "";
+		};
+
+		return $attributes;
+	},0, 3); // 0 is high priority, number of attributes ($attributes, $data, $post_id)
+
+	// add fonts awesome icons
+	wp_enqueue_script('fontAwesome', get_template_directory_uri() . "/template-parts/fontsAwesome/all.min.js");
+
+	// register_block_type built in function
+	// replaces legacy function 'acf_register_block_type(array(...))'
+	if (function_exists( 'register_block_type' ) ) :
+		register_block_type(get_template_directory() . "/template-parts/blocks/ctaButton/block.json");
+		register_block_type(get_template_directory() . "/template-parts/blocks/propertySearch/block.json");
+		register_block_type(get_template_directory() . "/template-parts/blocks/formSpreeForm/block.json");
+		register_block_type(get_template_directory() . "/template-parts/blocks/propertyFeatures/block.json");
+		register_block_type(get_template_directory() . "/template-parts/blocks/tickItem/block.json");
+	endif;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "acf/formspreeform",
+  "title": "FormSpree Form",
+  "description": "Renders a form",
+  "category": "Design",
+  "keywords": ["form", "formspree form", "button", "contact form"],
+  "icon": "format-aside",
+  "apiVersion": 2,
+  "acf": {
+    "renderTemplate": "./formSpreeForm.php",
+    "mode": "preview"
+  }
+}

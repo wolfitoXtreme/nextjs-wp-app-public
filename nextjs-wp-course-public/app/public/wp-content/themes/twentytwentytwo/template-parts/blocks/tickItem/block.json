@@ -1,0 +1,13 @@
+{
+  "name": "acf/tickitem",
+  "title": "Tick Item",
+  "description": "Tick Item",
+  "category": "Design",
+  "keywords": ["check mark", "tick", "correct"],
+  "icon": "yes-alt",
+  "apiVersion": 2,
+  "acf": {
+    "renderTemplate": "./tickItem.php",
+    "mode": "preview"
+  }
+}
