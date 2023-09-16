@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Aboreto&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .link-button {
+    @apply bg-pink-500 hover:bg-pink-700 mx-2 px-4 py-2 uppercase rounded-md cursor-pointer text-white self-center font-bold;
+  }
+}
