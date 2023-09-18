@@ -11,6 +11,7 @@ export const Cover = ({ children, background }) => {
         alt="cover"
         src={background}
         fill
+        priority // removes console warning
         className="object-cover mix-blend-soft-light"
       />
       <div className="max-w-5xl z-10">{children}</div>

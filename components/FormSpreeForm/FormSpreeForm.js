@@ -1,10 +1,12 @@
+"use client"; // Will render component at client side as needs user input (non static).
+
 import { useForm, ValidationError } from "@formspree/react";
 
 import { Input } from "components/Input";
 
 // integration code at https://formspree.io/forms/{formId}/integration
 export const FormSpreeForm = ({ formId }) => {
-  const [state, handleSubmit] = useForm(formId);
+  const [state, handleSubmit] = useForm(formId); // all hooks turn component into Client side ('use client'),
 
   if (state.succeeded) {
     return <p>Thanks for joining!</p>;

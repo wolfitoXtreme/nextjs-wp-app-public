@@ -1,13 +1,15 @@
-import { gql } from "@apollo/client";
-import client from "client";
+// all directories within api, should have this name assigned
+// 'route.js' if intended as an endpoint so NextJS recognizes it as such,
+// 'route.js' and 'page.js' cannot coexist within the same directory
+import { NextResponse } from "next/server";
 
 const paginationSize = parseInt(process.env.PAGINATION_SIZE);
 
-const handler = async (req, res) => {
-  console.log("search handler...", req.body);
+// using request object from web api
+export async function POST(request) {
   try {
     const { page = 1, ...otherParameters } = {
-      ...JSON.parse(req.body),
+      ...(await request.json()),
     };
 
     const pageOffset = (page - 1) * paginationSize; // will increase by paginationSize
@@ -62,18 +64,13 @@ const handler = async (req, res) => {
       })
       .join("");
 
-    console.log(
-      "search handler page:::",
-      { page },
-      { paginationSize },
-      { pageOffset },
-      { otherParameters },
-      { metaArray },
-      JSON.parse(req.body)
-    );
-
-    const { data } = await client.query({
-      query: gql`
+    const response = await fetch(`${process.env.WP_GRAPHQL_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
         query AllPropertiesQuery {
           properties(where: {
             offsetPagination: { offset: ${pageOffset}, size: ${paginationSize} }
@@ -86,7 +83,7 @@ const handler = async (req, res) => {
               }
               `
             }
-          }) {
+        }) {
             pageInfo {
               offsetPagination {
                 total
@@ -113,8 +110,9 @@ const handler = async (req, res) => {
           }
         }
       `,
+      }),
     });
-    console.log("data...", { data });
+    const { data } = await response.json();
 
     const {
       properties: {
@@ -125,13 +123,11 @@ const handler = async (req, res) => {
       },
     } = data;
 
-    return res.status(200).json({
+    return NextResponse.json({
       totalProperties: total,
       properties: nodes,
     });
   } catch (error) {
     console.error({ error });
   }
-};
-
-export default handler;
+}

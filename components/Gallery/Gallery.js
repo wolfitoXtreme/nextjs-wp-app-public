@@ -31,12 +31,7 @@ export const Gallery = ({ columns = 1, cropImages, images }) => {
                   width={width}
                   height={height}
                   alt={alt || ""}
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                  }}
+                  className="w-full h-full object-cover absolute"
                 />
               </div>
             </div>

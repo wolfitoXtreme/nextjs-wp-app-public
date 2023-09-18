@@ -31,15 +31,10 @@ export const PropertyCard = ({
             {imageUrl && (
               <Image
                 src={imageUrl}
-                width={300}
-                height={300}
-                style={{
-                  objectFit: "cover",
-                  width: "100%",
-                  height: "100%",
-                  position: "absolute",
-                }}
+                sizes="300px" // can take different sizes for different screen sizes
+                fill
                 alt=""
+                className="w-full h-full object-cover absolute"
               />
             )}
           </div>
